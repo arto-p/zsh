@@ -1,0 +1,38 @@
+#! zsh
+
+emulate -L zsh
+
+local null
+
+zparseopts -D \
+	A=null -askpass=null \
+	b=null -background=null \
+	C:=numm -close-from:=null \
+	E=null -preserve-env=null \
+	e=null -edit=null \
+	g:=null -group:=null \
+	H=null -set-home=null \
+	h::=null -host:=null -help=null \
+	i=null -login=null \
+	K=null -remove-timestamp=null \
+	k=null -reset-timestamp=null \
+	l=null -list=null \
+	n=null -non-interactive=null \
+	P=null -preserve-groups=null \
+	p:=null -prompt:=null \
+	r:=null -role:=null \
+	S=null -stdin=null \
+	s=null -shell=null \
+	t:=null -type:=null \
+	U:=null -other-user:=null \
+	u:=null -user:=null \
+	V=null -version=null \
+	v=null -validate=null
+
+if [[ $# == 0 ]]; then
+    man sudo
+else
+    man $1
+fi
+
+return $?

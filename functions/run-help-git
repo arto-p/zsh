@@ -1,0 +1,36 @@
+#! zsh
+
+emulate -L zsh
+
+local null
+
+zparseopts -D \
+	-version=null \
+	-help=null \
+	C:=null \
+	c:=null \
+	-exec-path::=null \
+	-html-path=null \
+	-man-path=null \
+	-info-path=null \
+	p=null -paginate=null \
+	-no-pager=null \
+	-git-dir:=null \
+	-work-tree:=null \
+	-namespace=null \
+	-bare=null \
+	-no-replace-objects=null \
+	-literal-pathspecs=null \
+	-glob-pathspecs=null \
+	-noglob-pathspecs=null \
+	-icase-pathspecs=null
+
+if [[ $# == 0 ]]; then
+    man git
+else
+    local al
+    if al=$(git config --get "alias.$1"); then
+        1=${al%% *}
+    fi
+    man git-$1
+fi

@@ -1,0 +1,87 @@
+#! zsh -f
+#
+# Install this function by placing it in your FPATH and then
+# adding to your .zshrc the line if you use run-help function:
+#       autoload -Uz run-help-docker
+
+emulate -L zsh
+
+local null
+
+zparseopts -D \
+    "D":=null \
+    "H":=null -host:=null \
+    -api-enable-cors:=null \
+    b:=null \
+    -bip:=null \
+    d:=null \
+    -dns:=null \
+    g:=null \
+    -fixed-cidr:=null \
+    -icc:=null \
+    -ip:=null \
+    -ip-masq:=null \
+    -iptables:=null \
+    l:=null -log-level:=null \
+    -label:=null \
+    -mtu:=null \
+    p:=null \
+    -registry-mirror:=null \
+    s:=null \
+    -storage-opt:=null \
+    v:=null \
+    -selinux-enabled:=null
+
+if [[ $# -eq 0 ]]; then
+    man docker
+    return
+fi
+
+if [[ $1 == -* ]]; then
+    man docker
+    print -Plu2 "" "Unknown option '%B$1%b' for docker"
+    return 1
+fi
+
+case $1 in
+    (attach) man docker-attach ;;
+    (build) man docker-build ;;
+    (commit) man docker-commit ;;
+    (cp) man docker-cp ;;
+    (create) man docker-create ;;
+    (diff) man docker-diff ;;
+    (events) man docker-events ;;
+    (exec) man docker-exec ;;
+    (export) man docker-export ;;
+    (history) man docker-history ;;
+    (images) man docker-images ;;
+    (import) man docker-import ;;
+    (info) man docker-info ;;
+    (inspect) man docker-inspect ;;
+    (kill) man docker-kill ;;
+    (load) man docker-load ;;
+    (login) man docker-login ;;
+    (logout) man docker-logout ;;
+    (logs) man docker-logs ;;
+    (pause) man docker-pause ;;
+    (port) man docker-port ;;
+    (ps) man docker-ps ;;
+    (pull) man docker-pull ;;
+    (push) man docker-push ;;
+    (restart) man docker-restart ;;
+    (rm) man docker-rm ;;
+    (rmi) man docker-rmi ;;
+    (run) man docker-run ;;
+    (save) man docker-save ;;
+    (search) man docker-search ;;
+    (start) man docker-start ;;
+    (stop) man docker-stop ;;
+    (tag) man docker-tag ;;
+    (top) man docker-top ;;
+    (unpause) man docker-unpause ;;
+    (version) man docker-version ;;
+    (wait) man docker-wait ;;
+    (*) man docker ;;
+esac
+
+return $?
