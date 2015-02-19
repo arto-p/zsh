@@ -1,0 +1,93 @@
+#! zsh
+#
+# function ssh-agent () {
+
+emulate -L zsh
+
+setopt LOCAL_OPTIONS EXTENDED_GLOB
+
+local pid agentenv="$HOME/.ssh/agent.env"
+
+ps -C ssh-agent -o user,pid --no-headers | \
+    awk "/^$USER\\>/ { print \$2 }" | read pid
+
+## Start SSH Agent from scratch
+if [[ -z $pid ]]; then
+
+    local tmpagentenv=$HOME/.ssh/agent.env.$$.$RANDOM
+
+    command ssh-agent $@ >| $tmpagentenv
+    if [[ $? != 0 ]]; then
+	print -Pu2 "$0:t fail: can't run ssh-agent"
+	rm -f $tmpagentenv
+	return 1
+    fi
+
+    ps -C ssh-agent -o user,pid --no-headers | \
+	awk "/^$USER\\>/ { print \$2 }" | read pid
+    if [[ -z $pid ]]; then
+	print -Pu2 "$0:t fail: ssh-agent does not run"
+	rm -f $tmpagentenv
+	return 1
+    fi
+
+    head -2 $tmpagentenv >| $agentenv
+    rm -f $tmpagentenv
+fi
+
+## SSH Agent already run and agent.env looks good
+if [[ -f $agentenv ]]; then
+    source $agentenv
+
+    if [[ -z $SSH_AGENT_PID ]]; then
+	# no SSH_AGENT_PID - format wrong
+	print -Pu2 "$0:t fail: $agentenv has wrong format"
+	rm -f $agentenv
+    elif [[ $pid != ${SSH_AGENT_PID} ]]; then
+	# ssh-agent pid and SSH_AGENT_PID is not same
+	print -Pu2 "$0:t fail: $agentenv is not current"
+	rm -f $agentenv
+    else
+	ssh-add -l > /dev/null 2>/dev/null
+	local ret=$?
+	if [[ $ret == 2 ]]; then
+	    # Cant connet to ssh-agent
+	    print -Pu2 "$0:t fail: $agentenv is not current"
+	    rm -f $agentenv
+	    kill -TERM $SSH_AGENT_PID
+	else
+	    return 0
+	fi
+    fi
+fi
+
+## SSH Agent is running, but agent.env is wrong
+local dir socket
+
+# find directory which owner is $USER:$USER, mode is 0700 and non-empty
+# Unfortunately, /tmp/ssh-[[:alnum:]]#(f700/UGF:Ne)/agent.[[:digit:]]#(f600=UG:Ne)
+# does not work.
+for dir in /tmp/ssh-[[:alnum:]]#(f700/UGF:Ne); do
+
+    print ${dir}agent.[[:digit:]]#(f600=UG:Ne) | read socket
+    [[ -n $socket ]] && break
+done
+
+if [[ -z $socket ]]; then
+    print -Pu2 "$0:t fail: socket does not exists"
+    [[ -n $pid ]] && kill $pid
+    return 1
+fi
+
+if [[ ${+SSH_AGENT_INTERACTIVE} == 1 ]]; then
+    print -z "export SSH_AGENT_PID=$pid SSH_AUTH_SOCK=$socket"
+else
+    export SSH_AGENT_PID=$pid SSH_AUTH_SOCK=$socket
+    print -l "export SSH_AGENT_PID=$pid" \
+	"export SSH_AUTH_SOCK=$socket" >| $agentenv
+fi
+
+return
+
+# }
+# That's all, folks!
