@@ -1,0 +1,21 @@
+#! zsh -f
+#
+# function seconds2time () {
+
+emulate -L zsh
+
+if [[ $# == 0 ]]; then
+    print -u2 "usage: $0:t fmt number"
+    return
+fi
+
+local fmt=$1; shift
+local d=$( print -f "%d" $[ $1/( 24 * 60 * 60) ] )
+local h=$( print -f "%02d" $[ ( $1 - $day * 24 * 60 * 60 )/60/60 ] )
+local m=$( print -f "%02d" $[ ( $1 - $day * 24 * 60 * 60 - $hour * 60 * 60 )/60 ] )
+local s=$( print -f "%02d" $[ $1 - $day * 24 * 60 * 60 - $hour * 60 * 60 - $min * 60 ] )
+
+print ${${${${fmt//\%d/$d}//\%H/$h}//\%M/$m}//\%S/$s}
+
+# }
+# That's all, folks!
