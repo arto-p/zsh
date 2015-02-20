@@ -32,7 +32,7 @@ After that your ssh can obtain keys from `ssh-agent`.
 Convert seconds to time according to format:
 
 ```
-  for i in {10..19}; do seconds2time "$[2**$i]: %d %H:%M:%S" $[2**$i]; done  2:04 (0)
+  for i in {10..19}; do seconds2time "$[2**$i]: %d %H:%M:%S" $[2**$i]; done
   1024: 0 00:17:04
   2048: 0 00:34:08
   4096: 0 01:08:16
