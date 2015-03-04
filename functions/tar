@@ -1,0 +1,181 @@
+#! zsh -f
+#
+# Replacement for tar: it can process remote files.
+# function tar () {
+
+emulate -L zsh
+
+typeset -a args
+
+zparseopts -D -a args \
+    "A+=args" "-catenate+=args" "-concatenate+=args" \
+    "c+=args" "-create+=args" \
+    "d+=args" "-diff+=args" "-compare+=args" \
+    "-delete+=args" \
+    "r+=args" "-append+=args" \
+    "t+=args" "-list+=args" \
+    "-test-label+=args" \
+    "u+=args" "-update+=args" \
+    "x+=args" "-extract+=args" "-get+=args" \
+    "0h+=args" "0l+=args" "0m+=args" "1h+=args" "1l+=args" "1m+=args" \
+    "2h+=args" "2l+=args" "2m+=args" "3h+=args" "3l+=args" "3m+=args" \
+    "4h+=args" "4l+=args" "4m+=args" "5h+=args" "5l+=args" "5m+=args" \
+    "6h+=args" "6l+=args" "6m+=args" "7h+=args" "7l+=args" "7m+=args" \
+    "a:=args" "-auto-compress+=args" \
+    "-acls+=args" "-no-acls+=args" \
+    "-add-file+:=args" \
+    "-anchored+=args" "-no-anchored+=args" \
+    "-atime-preserve+=args" \
+    "-no-auto-compress+=args" \
+    "b+=args" "-blocking-factor+:=args" \
+    "B+=args" "-read-full-records+=args" \
+    "-backup+=args" \
+    "C+:=args" "-directory+:=args" \
+    "-check-device+=args" "-no-check-device+=args" \
+    "-checkpoint+=args" \
+    "-checkpoint-action+:=args" \
+    "-delay-directory-restore+=args" "-no-delay-directory-restore+=args" \
+    "-exclude+:=args" \
+    "-exclude-backups+=args" \
+    "-exclude-caches+=args" \
+    "-exclude-caches-all+=args" \
+    "-exclude-caches-under+=args" \
+    "-exclude-tag+:=args" \
+    "-exclude-tag-all+:=args" \
+    "-exclude-tag-under+:=args" \
+    "-exclude-vcs+=args" \
+    "f+=args" \
+    "-file+:=args" \
+    "F+=args" \
+    "-info-script+=args" \
+    "-new-volume-script+:=args" \
+    "-force-local+=args" \
+    "-full-time+=args" \
+    "g+=args" \
+    "-listed-incremental+:=args" \
+    "G+=args" \
+    "-incremental+=args" \
+    "-group+:=args" \
+    "h+=args" \
+    "-dereference+=args" \
+    "-H+=args" \
+    "-format+:=args" \
+    "-hard-dereference+=args" \
+    "i+=args" \
+    "-ignore-zeros+=args" \
+    "I+=args" \
+    "-use-compress-program+:=args" \
+    "-ignore-case+=args" \
+    "-no-ignore-case+=args" \
+    "-ignore-command-error+=args" \
+    "-no-ignore-command-error+=args" \
+    "-ignore-failed-read+=args" \
+    "-index-file+:=args" \
+    "j+=args" \
+    "-bzip2+=args" \
+    "J+=args" \
+    "-xz+=args" \
+    "k+=args" \
+    "-keep-old-files+=args" \
+    "K+=args" \
+    "-starting-file+:=args" \
+    "-keep-directory-symlink+=args" \
+    "-keep-newer-files+=args" \
+    "l+=args" \
+    "-check-links+=args" \
+    "L+=args" \
+    "-tape-length+:=args" \
+    "-level+:=args" \
+    "-lzip+=args" \
+    "-lzma+=args" \
+    "-lzop+=args" \
+    "m+=args" \
+    "-touch+=args" \
+    "M+=args" \
+    "-multi-volume+=args" \
+    "-mode+:=args" \
+    "-mtime+:=args" \
+    "n+=args" \
+    "-seek+=args" \
+    "N+=args" \
+    "-newer+=args" \
+    "-after-date+:=args" \
+    "-newer-mtime+:=args" \
+    "-null+=args" \
+    "-no-null+=args" \
+    "-numeric-owner+=args" \
+    "-O+=args" "-to-stdout+=args" \
+    "-occurrence+=args" \
+    "-old-archive+=args" "-portability+=args" \
+    "-one-file-system+=args" \
+    "-overwrite+=args" "-overwrite-dir+=args" "-no-overwrite-dir+=args" \
+    "-owner+:=args" \
+    "-p+=args" "-preserve-permissions+=args" "-same-permissions+=args" \
+    "P+=args" "-absolute-names+=args" \
+    "-pax-option+:=args" \
+    "-posix+=args" \
+    "-preserve+=args" \
+    "-quote-chars+:=args" \
+    "-no-quote-chars+:=args" \
+    "-quoting-style+:=args" \
+    "R+=args" "-block-number+=args" \
+    "-record-size+:=args" \
+    "-recursion+=args" "-no-recursion+=args" \
+    "-recursive-unlink+=args" \
+    "-remove-files+=args" \
+    "-restrict+=args" \
+    "-rmt-command+:=args" \
+    "-rsh-command+:=args" \
+    "s+=args" "-preserve-order+=args" "-same-order+=args" \
+    "S+=args" "-sparse+=args" \
+    "-same-owner+=args" "-no-same-owner+=args" \
+    "-no-same-permissions+=args" \
+    "-no-seek+=args" \
+    "-selinux+=args" "-no-selinux+=args" \
+    "-show-defaults+=args" \
+    "-show-omitted-dirs+=args" \
+    "-show-snapshot-field-ranges+=args" \
+    "-show-transformed-names+=args" "-show-stored-names+=args" \
+    "-skip-old-files+=args" \
+    "-sparse-version+:=args" \
+    "-strip-components+:=args" \
+    "-suffix+:=args" \
+    "T+:=args" "-files-from+:=args" \
+    "-to-command+:=args" \
+    "-totals+=args" \
+    "-transform+=args" "-xform EXPRESSION+=args" \
+    "U+=args" "-unlink-first+=args" \
+    "-unquote+=args" "-no-unquote+=args" \
+    "-utc+=args" \
+    "v+=args" "-verbose+=args" \
+    "V+:=args" "-label+:=args" \
+    "-volno-file+:=args" \
+    "w+=args" "-interactive+=args" "-confirmation+=args" \
+    "W+=args" "-verify+=args" \
+    "-warning+:=args" \
+    "-wildcards+=args" \
+    "-wildcards-match-slash+=args" \
+    "-no-wildcards-match-slash+=args" \
+    "-no-wildcards+=args" \
+    "X+:=args" "-exclude-from+:=args" \
+    "-xattrs+=args" \
+    "-xattrs-exclude+:=args" \
+    "-xattrs-include+:=args" \
+    "-no-xattrs+=args" \
+    "z+=args" "-gzip+=args" "-gunzip+=args" "-ungzip+=args" \
+    "Z+=args" "-compress+=args" "-uncompress+=args"
+
+args=( ${(@s: :)"${(j: :)args:s/ =/=}"} )
+
+if [[ $1 == (ftp|http|https)://* ]]; then
+    command wget -qO- "$1" | command tar $args -
+elif [[ $1 == [[:alnum:].-]##:* ]]; then
+    ssh -q ${1%%:*} cat ${1#*:} | command tar $args -
+else
+    command tar $args "$1"
+fi
+
+return $?
+
+# }
+### That's all, folks!

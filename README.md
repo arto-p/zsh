@@ -44,3 +44,8 @@ Convert seconds to time according to format:
   262144: 3 00:49:04
   524288: 6 01:38:08
 ```
+
+# `tar`
+
+Process also remote files (schemes http, https, ftp and ssh).
+
