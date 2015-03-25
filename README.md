@@ -18,6 +18,7 @@ must call `man vim`, not `man sudo`.
  * run-help-ip
  * run-help-sudo
  * run-help-xargs
+ * run-help-trace-cmd
 
 # `ssh-agent`
 
