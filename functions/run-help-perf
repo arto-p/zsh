@@ -1,0 +1,32 @@
+#! zsh -f
+#
+# Install this function by placing it in your FPATH and then
+# adding to your .zshrc the line if you use run-help function:
+#       autoload -Uz run-help-perf
+
+emulate -L zsh
+
+local -a null
+
+zparseopts -D -a null -- \
+    -version \
+    -help \
+    -debug: \
+    -buildid-dir:
+
+if [[ $# -eq 0 ]]; then
+    man perf
+    return
+fi
+
+if [[ $1 == -* ]]; then
+    man perf
+    print -Plu2 "" "Unknown option '%B$1%b' for ip"
+    return 1
+fi
+
+man perf-$1
+
+return $?
+
+### That's all, folks!
