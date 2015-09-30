@@ -6,31 +6,56 @@
 
 emulate -L zsh
 
-local null
+local -a null
 
-zparseopts -D \
-    "D":=null \
-    "H":=null -host:=null \
-    -api-enable-cors:=null \
-    b:=null \
-    -bip:=null \
-    d:=null \
-    -dns:=null \
-    g:=null \
-    -fixed-cidr:=null \
-    -icc:=null \
-    -ip:=null \
-    -ip-masq:=null \
-    -iptables:=null \
-    l:=null -log-level:=null \
-    -label:=null \
-    -mtu:=null \
-    p:=null \
-    -registry-mirror:=null \
-    s:=null \
-    -storage-opt:=null \
-    v:=null \
-    -selinux-enabled:=null
+zparseopts -D -a null -- \
+    -api-enable-cors: \
+    -add-registry: \
+    -api-cors-header: \
+    -config: \
+    b: -bridge: \
+    -block-registry: \
+    -bip: \
+    "D": -debug: \
+    d: -daemon: \
+    -default-gateway: \
+    -default-gateway-v6: \
+    -default-ulimit: \
+    -dns-search: \
+    -dns: \
+    e: -exec-driver: \
+    -exec-opt: \
+    -exec-root: \
+    -fixed-cidr: \
+    -fixed-cidr-v6: \
+    "G": -group: \
+    g: -graph: \
+    help: \
+    "H": -host: \
+    -icc: \
+    -ip: \
+    -ip-masq: \
+    -iptables: \
+    -insecure-registry: \
+    -ip-forward: \
+    -ipv6: \
+    l: -log-level: \
+    -label: \
+    -log-driver: \
+    -log-opt: \
+    -mtu: \
+    p: -pidfile: \
+    -registry-mirror: \
+    s: -storage-driver: \
+    -storage-opt: \
+    -selinux-enabled: \
+    -tls: \
+    -tlscacert: \
+    -tlscert: \
+    -tlskey: \
+    -tlsverify: \
+    -userland-proxy: \
+    v:
 
 if [[ $# -eq 0 ]]; then
     man docker
@@ -85,3 +110,5 @@ case $1 in
 esac
 
 return $?
+
+### That's all, folks!

@@ -2,35 +2,34 @@
 
 emulate -L zsh
 
-local null
+local -a null
 
-zparseopts -D \
-	-version=null \
-	-help=null \
-	C:=null \
-	c:=null \
-	-exec-path::=null \
-	-html-path=null \
-	-man-path=null \
-	-info-path=null \
-	p=null -paginate=null \
-	-no-pager=null \
-	-git-dir:=null \
-	-work-tree:=null \
-	-namespace=null \
-	-bare=null \
-	-no-replace-objects=null \
-	-literal-pathspecs=null \
-	-glob-pathspecs=null \
-	-noglob-pathspecs=null \
-	-icase-pathspecs=null
+zparseopts -D -a null -- \
+    -version \
+    -help \
+    C: \
+    c: \
+    -exec-path:: \
+    -html-path \
+    -man-path \
+    -info-path \
+    p -paginate \
+    -no-pager \
+    -git-dir: \
+    -work-tree: \
+    -namespace \
+    -bare \
+    -no-replace-objects \
+    -literal-pathspecs \
+    -glob-pathspecs \
+    -noglob-pathspecs \
+    -icase-pathspecs
 
 if [[ $# == 0 ]]; then
     man git
 else
-    local al
-    if al=$(git config --get "alias.$1"); then
-        1=${al%% *}
-    fi
-    man git-$1
+    local als=$(git config --get "alias.$1")
+    man git-${als:-$1}
 fi
+
+### That's all, folks!

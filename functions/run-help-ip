@@ -6,18 +6,18 @@
 
 emulate -L zsh
 
-local null
+local -a null
 
-zparseopts -D \
-    V=null Version=null -Version=null \
-    b:=null batch:=null -batch:=null \
-    force=null -force=null \
-    s=null stats=null -stats=null statistics=null -statistics=null \
-    l:=null loops:=null -loops:=null \
-    f:=null family:=null -family:=null \
-    4=null 6=null B=null D=null I=null O=null \
-    o=null oneline=null -oneline=null \
-    r=null resolve=null -resolve=null
+zparseopts -D -a null -- \
+    V Version -Version \
+    b: batch: -batch: \
+    force -force \
+    s stats -stats statistics -statistics \
+    l: loops: -loops: \
+    f: family: -family: \
+    4 6 B D I O \
+    o oneline -oneline \
+    r resolve -resolve
 
 if [[ $# -eq 0 ]]; then
     man ip
@@ -52,3 +52,5 @@ case $1 in
 esac
 
 return $?
+
+### That's all, folks!

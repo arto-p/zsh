@@ -6,38 +6,38 @@
 
 emulate -L zsh
 
-local null
-typeset -a zpargs
+local -a null
+local -a zpargs
 
 if [[ $OSTYPE == freebsd* ]]; then
-    zpargs=( "o=null" "E:=null" "I:=null" "J:=null" "L:=null" \
-	"n:=null" "o=null" "P:=null" "p=null" "r=null" "R:=null" \
-	"S:=null" "s:=null" "t=null" "x=null" )
+    zpargs=( "o" "E:" "I:" "J:" "L:" \
+             "n:" "o" "P:" "p" "r" "R:" \
+             "S:" "s:" "t" "x" )
 else
     # By default assume gnu utils
-    zpargs=( "0=null" "-null=null" \
-	"a:=null" "-arg-file:=null" \
-	"d:=null" "-delimiter:=null" \
-	"E:=null" "e::=null" "-eof::=null" \
-	"I:=null" "i::=null" "-replace::=null" \
-	"L:=null" "l::=null" "-max-lines::=null" \
-	"n:=null" "-max-args:=null" \
-	"P:=null" "-max-procs:=null" \
-	"p=null" "-inetractive=null" \
-	"-process-slot-var:=null" \
-	"r=null" "-no-run-if-empty=null" \
-	"s:=null" "-max-chars:=null" \
-	"-show-limits=null" \
-	"t=null" "-verbose=null" \
-	"x=null" "-exit=null" \
-	"-help=null" "-version=null" )
+    zpargs=( "0" "-null" \
+             "a:" "-arg-file:" \
+             "d:" "-delimiter:" \
+             "E:" "e::" "-eof::" \
+             "I:" "i::" "-replace::" \
+             "L:" "l::" "-max-lines::" \
+             "n:" "-max-args:" \
+             "P:" "-max-procs:" \
+             "p" "-inetractive" \
+             "-process-slot-var:" \
+             "r" "-no-run-if-empty" \
+             "s:" "-max-chars:" \
+             "-show-limits" \
+             "t" "-verbose" \
+             "x" "-exit" \
+             "-help" "-version" )
 fi
 
-zparseopts -D $zpargs
+zparseopts -D -a null -- $zpargs
 
 if [[ $# -eq 0 ]]; then
     man xargs
-    return
+    return $?
 fi
 
 if [[ $1 == -* ]]; then
@@ -50,3 +50,4 @@ man $1
 
 return $?
 
+### That's all, folks!

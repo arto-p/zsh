@@ -5,38 +5,38 @@
 
 emulate -L zsh
 
-local null
+local -a null
 
-zparseopts -D "h":=null
+zparseopts -D -a null -- "h":
 
 if [[ $# == 0 ]]; then
-	man trace-cmd
-	return
+    man trace-cmd
+    return
 fi
 
 if [[ $1 == -* ]]; then
-	man trace-cmd
-        print -Plu2 "" "Unknown option '%B$1%b' for docker"
-	return 1
+    man trace-cmd
+    print -Plu2 "" "Unknown option '%B$1%b' for docker"
+    return 1
 fi
 
 case $1 in
-	(check-events) man trace-cmd-check-events ;;
-	(extract) man trace-cmd-extract ;;
-	(hist) man trace-cmd-hist ;;
-	(list) man trace-cmd-list ;;
-	(listen) man trace-cmd-listen ;;
-	(mem) man trace-cmd-mem ;;
-	(options) man trace-cmd-options ;;
-	(record) man trace-cmd-record ;;
-	(report) man trace-cmd-report ;;
-	(reset) man trace-cmd-reset ;;
-	(restore) man trace-cmd-restore ;;
-	(split) man trace-cmd-split ;;
-	(stack) man trace-cmd-stack ;;
-	(start) man trace-cmd-start ;;
-	(stop) man trace-cmd-stop ;;
-	(*) man trace-cmd ;;
+    (check-events) man trace-cmd-check-events ;;
+    (extract) man trace-cmd-extract ;;
+    (hist) man trace-cmd-hist ;;
+    (list) man trace-cmd-list ;;
+    (listen) man trace-cmd-listen ;;
+    (mem) man trace-cmd-mem ;;
+    (options) man trace-cmd-options ;;
+    (record) man trace-cmd-record ;;
+    (report) man trace-cmd-report ;;
+    (reset) man trace-cmd-reset ;;
+    (restore) man trace-cmd-restore ;;
+    (split) man trace-cmd-split ;;
+    (stack) man trace-cmd-stack ;;
+    (start) man trace-cmd-start ;;
+    (stop) man trace-cmd-stop ;;
+    (*) man trace-cmd ;;
 esac
 
 return $?

@@ -2,37 +2,41 @@
 
 emulate -L zsh
 
-local null
+local -a null
 
-zparseopts -D \
-	A=null -askpass=null \
-	b=null -background=null \
-	C:=numm -close-from:=null \
-	E=null -preserve-env=null \
-	e=null -edit=null \
-	g:=null -group:=null \
-	H=null -set-home=null \
-	h::=null -host:=null -help=null \
-	i=null -login=null \
-	K=null -remove-timestamp=null \
-	k=null -reset-timestamp=null \
-	l=null -list=null \
-	n=null -non-interactive=null \
-	P=null -preserve-groups=null \
-	p:=null -prompt:=null \
-	r:=null -role:=null \
-	S=null -stdin=null \
-	s=null -shell=null \
-	t:=null -type:=null \
-	U:=null -other-user:=null \
-	u:=null -user:=null \
-	V=null -version=null \
-	v=null -validate=null
+zparseopts -D -a null -- \
+    A -askpass \
+    b -background \
+    C: -close-from: \
+    E -preserve-env \
+    e -edit \
+    g: -group: \
+    H -set-home \
+    h:: -host: -help \
+    i -login \
+    K -remove-timestamp \
+    k -reset-timestamp \
+    l -list \
+    n -non-interactive \
+    P -preserve-groups \
+    p: -prompt: \
+    r: -role: \
+    S -stdin \
+    s -shell \
+    t: -type: \
+    U: -other-user: \
+    u: -user: \
+    V -version \
+    v -validate
 
-if [[ $# == 0 ]]; then
+if [[ $1 == -* ]]; then
     man sudo
-else
-    man $1
+    print -Plu2 "" "Unknown option '%B$1%b' for sudo"
+    return 1
 fi
 
+man ${1:-sudo}
+
 return $?
+
+### That's all, folks!
