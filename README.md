@@ -22,9 +22,9 @@ must call `man vim`, not `man sudo`.
 
 # `ssh-agent`
 
-Main problem with `ssh-agent` -- how to obtain right `SSH_AUTH_SOCK` if
-you login from another terminal? This function simply check that
-ssh-agent is up, properly working (has working socket) and then
+Main problem with `ssh-agent` -- how to obtain the right `SSH_AUTH_SOCK`
+if you login from another terminal? This function simply check that
+ssh-agent is up, properly worked (has a working socket) and then
 write `SSH_AGENT_PID` and `SSH_AUTH_SOCK` to file and export.
 After that your ssh can obtain keys from `ssh-agent`.
 
